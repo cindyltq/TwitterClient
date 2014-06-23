@@ -1,0 +1,56 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@drawable/background"
+	tools:context=".LoginActivity" >
+	
+	  <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="29dp"
+        android:text="@string/description"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp" />
+	  
+	<ImageButton
+		android:id="@+id/btnTwitter"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/tvDescription"
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="28dp"
+		android:background="@null"
+		android:contentDescription="@string/login_label"
+		android:onClick="loginToRest"
+		android:src="@drawable/twitter_connect" />
+	
+	 <TextView
+        android:id="@+id/tvWhy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvAppDesc"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp"
+        android:text="@string/why_twitter_title"
+        android:textColor="#000000"
+        android:textStyle="bold" />
+	 
+    <TextView
+    	android:id="@+id/tvAppDesc"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_alignLeft="@+id/tvWhy"
+    	android:layout_alignParentBottom="true"
+    	android:layout_marginBottom="70dp"
+    	android:layout_marginRight="10dp"
+    	android:autoLink="all"
+    	android:linksClickable="true"
+    	android:text="@string/why_twitter_desc"
+    	android:textColor="#7e7e7e" />
+   
+</RelativeLayout>
