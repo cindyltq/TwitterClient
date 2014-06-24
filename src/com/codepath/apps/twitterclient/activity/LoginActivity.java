@@ -24,7 +24,7 @@ public class LoginActivity extends OAuthLoginActivity<TwitterRestClient>
 	setContentView(R.layout.activity_login);
 	
 	tvAppDesc = (TextView) findViewById(R.id.tvAppDesc);
-	tvAppDesc.setText(Html.fromHtml(getString(R.string.why_twitter_desc)));
+	tvAppDesc.setText(Html.fromHtml(getString(R.string.question_desc)));
     }
 
 

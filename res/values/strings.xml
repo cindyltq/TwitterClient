@@ -3,14 +3,21 @@
 	<string name="app_name">Twitter Client</string>
 	<string name="sign_in">Sign in</string>
 	<string name="action_compose">Compose Tweet</string>
-	<string name="description">To use this simple Twitter client, please click the following button to connect with Twitter</string>	
+	<string name="description">To use this simple Twitter client, please click the following button to connect with Twitter</string>
 	<string name="login_label">Connect To Twitter</string>
 	<string name="title_activity_timeline">Timeline</string>
-	<string name="why_twitter_title">What does this app do? </string>
-	<string name="why_twitter_desc">		
-		<![CDATA[
-        This app calls <a href="https://twitter.com/">Twitter</a> RESTful API and displays tweets on the screen.
-    ]]>		
-		
-		</string>
+	<string name="question_title">What does this app do? </string>
+	<string name="question_desc">
+<![CDATA[
+        <p>This application will be able to: </p>
+       	    Call <a href="https://twitter.com/">Twitter</a> RESTful API. 
+			Read tweets from your timeline. 
+			Post tweets for you.	
+    ]]>
+	</string>
+	<string name="enter_status">Enter your status </string>
+	<string name="title_activity_compose_tweet">Compose Tweet</string>
+	<string name="send">Send</string>
+	<string name="cancel">Cancel</string>
+	<string name="limit">140</string>
 </resources>

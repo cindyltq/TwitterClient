@@ -5,6 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -41,12 +44,13 @@ public class CommonUtil
 	long dateMillis = getDateFromString(rawJsonDate).getTime();
 	relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
 
-	relativeDate = StringUtils.replace(relativeDate, "hours", "h");
-	relativeDate = StringUtils.replace(relativeDate, "hour", "h");
-	relativeDate = StringUtils.replace(relativeDate, "minutes", "m");
-	relativeDate = StringUtils.replace(relativeDate, "minute", "m");
-	relativeDate = StringUtils.replace(relativeDate, "days", "d");
-	relativeDate = StringUtils.replace(relativeDate, "day", "d");
+	relativeDate = StringUtils.replace(relativeDate, " hours", "h");
+	relativeDate = StringUtils.replace(relativeDate, " hour", "h");
+	relativeDate = StringUtils.replace(relativeDate, " minutes", "m");
+	relativeDate = StringUtils.replace(relativeDate, " minute", "m");
+	relativeDate = StringUtils.replace(relativeDate, " days", "d");
+	relativeDate = StringUtils.replace(relativeDate, " day", "d");
+	relativeDate = StringUtils.replace(relativeDate, " ago", "");
 	
 	return relativeDate;
     }
@@ -57,4 +61,20 @@ public class CommonUtil
 	return (cm.getActiveNetworkInfo() != null) && cm.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
+    public static String getJsonErrorMsg(JSONObject  errorResponse)
+    {
+	String msg ="";
+	
+	try
+	{
+	    JSONObject jsonObject = (JSONObject) errorResponse.getJSONArray("errors").get(0);
+	    msg = jsonObject.getString("message");
+	}
+	catch (JSONException e)
+	{
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+	return msg;
+    }
 }

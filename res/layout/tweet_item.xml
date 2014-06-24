@@ -28,7 +28,7 @@
 			android:gravity="left"
 			android:text="user Name"
 			android:textColor="#000000"
-			android:textSize="16sp"
+			android:textSize="15sp"
 			android:textStyle="bold" />
 		<TextView
             android:id="@+id/tvScreenName"
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:text="screen Name"
             android:textColor="#7e7e7e"
-            android:textSize="14sp"/>
+            android:textSize="12sp"/>
 		<TextView
 			android:id="@+id/tvTimestamp"
 			android:layout_width="wrap_content"
@@ -56,5 +56,5 @@
 		android:autoLink="all"
 		android:linksClickable="true"
 		android:text="body"
-		android:textSize="16sp" />
+		android:textSize="14sp" />
 </RelativeLayout>

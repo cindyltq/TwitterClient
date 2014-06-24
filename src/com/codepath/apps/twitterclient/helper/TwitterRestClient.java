@@ -68,11 +68,11 @@ public class TwitterRestClient extends OAuthBaseClient {
 	    client.get(apiUrl, params, handler);
 	}
 	
-	public void postTweet(AsyncHttpResponseHandler handler)
+	public void postStatusUpdate(String statusText, AsyncHttpResponseHandler handler)
 	{
-//	    String apiUrl = getApiUrl ("statuses/home_timeline.json");
-//	    RequestParams params = new RequestParams();	    
-//	    params.put("count", String.valueOf(TimelineActivity.COUNT));
-//	    client.post(apiUrl, params, handler);
+	    String apiUrl = getApiUrl ("statuses/update.json");
+	    RequestParams params = new RequestParams();	    
+	    params.put("status", statusText);
+	    client.post(apiUrl, params, handler);
 	}
 }

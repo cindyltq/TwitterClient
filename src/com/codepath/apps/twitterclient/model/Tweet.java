@@ -1,5 +1,6 @@
 package com.codepath.apps.twitterclient.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -21,7 +22,7 @@ import com.codepath.apps.twitterclient.helper.CommonUtil;
  * 
  */
 @Table(name = "tweet")
-public class Tweet extends Model
+public class Tweet extends Model implements Serializable
 {
     // Define table fields
     @Column(name = "body")

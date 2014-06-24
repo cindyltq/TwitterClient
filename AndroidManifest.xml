@@ -3,14 +3,13 @@
 	package="com.codepath.apps.twitterclient"
 	android:versionCode="1"
 	android:versionName="1.0" >
-	<uses-sdk android:minSdkVersion="14"
-		  android:targetSdkVersion="18" />
-	
+	<uses-sdk
+		android:minSdkVersion="14"
+		android:targetSdkVersion="18" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	
 	<application
 		android:name="com.codepath.apps.twitterclient.helper.TwitterApplication"
 		android:allowBackup="true"
@@ -23,16 +22,13 @@
 		<meta-data
 			android:name="AA_DB_VERSION"
 			android:value="1" />
-		
 		<activity
 			android:name="com.codepath.apps.twitterclient.activity.LoginActivity"
 			android:label="@string/sign_in" >
-			
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
-			
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.DEFAULT" />
@@ -40,13 +36,15 @@
 				<data
 					android:host="cpbasictweets"
 					android:scheme="oauth" />
-			</intent-filter>			
+			</intent-filter>
 		</activity>
-		
 		<activity
 			android:name="com.codepath.apps.twitterclient.activity.TimelineActivity"
 			android:label="@string/title_activity_timeline" >
 		</activity>
-		
+		<activity
+			android:name="com.codepath.apps.twitterclient.ComposeTweetActivity"
+			android:label="@string/title_activity_compose_tweet" >
+		</activity>
 	</application>
 </manifest>

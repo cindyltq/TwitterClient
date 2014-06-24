@@ -1,5 +1,6 @@
 package com.codepath.apps.twitterclient.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ import com.activeandroid.query.Select;
  * 
  */
 @Table(name = "user")
-public class User extends Model
+public class User extends Model implements Serializable
 {
     // Define table fields
     @Column(name = "name")
