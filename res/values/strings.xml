@@ -10,9 +10,9 @@
 	<string name="question_desc">
 <![CDATA[
         <p>This application will be able to: </p>
-       	    Call <a href="https://twitter.com/">Twitter</a> RESTful API. 
-			Read tweets from your timeline. 
-			Post tweets for you.	
+       	    Call <a href="https://twitter.com">Twitter</a> RESTful API. <br>
+			Read tweets from your timeline. <br>
+			Post tweets for you.	<br>
     ]]>
 	</string>
 	<string name="enter_status">Enter your status </string>
