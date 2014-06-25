@@ -35,7 +35,7 @@ public class LoginActivity extends OAuthLoginActivity<TwitterRestClient>
     {
 	Intent i = new Intent(this, TimelineActivity.class);
 	if (CommonUtil.isNetworkConnected(this))
-	    i.putExtra("isNetworkAvailable", false);
+	    i.putExtra("isNetworkAvailable", true);
 	else	
 	  i.putExtra("isNetworkAvailable", false);
 	

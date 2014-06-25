@@ -47,12 +47,12 @@ public class TimelineActivity extends Activity
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_timeline);
 
-	populateTimeline();
-
 	lvTimeline = (ListView) findViewById(R.id.lvTimeline);
 	itemAdapter = new TweetArrayAdapter(this, tweetList);
 	lvTimeline.setAdapter(itemAdapter);
-
+	
+	populateTimeline();
+	
 	lvTimeline.setOnScrollListener(getOnScrollListener());
     }
 
