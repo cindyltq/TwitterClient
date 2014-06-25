@@ -12,22 +12,13 @@
 		android:layout_alignParentLeft="true"
 		android:layout_marginBottom="125dp"
 		android:layout_marginLeft="25dp"
-		android:layout_marginRight="40dp"
+		android:layout_marginRight="50dp"
 		android:ems="15"
 		android:hint="@string/enter_status"
 		android:textColor="#000000" >
 		<requestFocus />
 	</EditText>
-	   <TextView
-        android:id="@+id/tvDisplay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/etStatus"    
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="15dp"
-        android:text="@+id/limit"  
-        android:ems="15"
-        android:textColor="#000000" />
+	
 	<Button
 		android:id="@+id/btnSend"
 		android:layout_width="60dp"
@@ -64,4 +55,15 @@
 		android:textAlignment="center"
 		android:textColor="#FFFFFF"
 		android:textSize="14sp" />
+	<TextView
+		android:id="@+id/tvDisplay"
+		android:layout_width="30dp"
+		android:layout_height="wrap_content"
+		android:layout_alignBaseline="@+id/etStatus"
+		android:layout_alignBottom="@+id/etStatus"
+		android:layout_alignParentRight="true"
+		android:layout_marginRight="10dp"
+		android:ems="15"
+		android:text="@string/limit"
+		android:textColor="#000000" />
 </RelativeLayout>

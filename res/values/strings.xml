@@ -17,7 +17,7 @@
 	</string>
 	<string name="enter_status">Enter your status </string>
 	<string name="title_activity_compose_tweet">Compose Tweet</string>
-	<string name="send">Send</string>
+	<string name="send">Tweet</string>
 	<string name="cancel">Cancel</string>
 	<string name="limit">140</string>
 </resources>
