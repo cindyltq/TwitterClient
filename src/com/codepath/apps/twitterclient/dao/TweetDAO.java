@@ -19,7 +19,9 @@ public class TweetDAO
 
     public static List<Tweet> getRecentItems()
     {
-	return new Select().from(Tweet.class).orderBy("id DESC").limit("300").execute();
+	List<Tweet> tweetList = new Select().from(Tweet.class).orderBy("id DESC").limit("300").execute();
+	
+	return tweetList;
     }
 
     public static List<Tweet> getAllItemsByUser(User user)
@@ -60,7 +62,7 @@ public class TweetDAO
 	newUser.setProfileImageUrl(user.getProfileImageUrl());
 	newUser.save();
 	
-	tweet.setUser(user);
+	tweet.setUser(newUser);
 	tweet.save();
     }
 
