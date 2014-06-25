@@ -1,6 +1,7 @@
 package com.codepath.apps.twitterclient.activity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.codepath.apps.twitterclient.ComposeTweetActivity;
 import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.adapter.TweetArrayAdapter;
+import com.codepath.apps.twitterclient.dao.TweetDAO;
 import com.codepath.apps.twitterclient.helper.CommonUtil;
 import com.codepath.apps.twitterclient.helper.EndlessScrollListener;
 import com.codepath.apps.twitterclient.helper.TwitterApplication;
@@ -56,7 +58,12 @@ public class TimelineActivity extends Activity
 
     private void populateTimeline()
     {
-	restClient.getHomeTimeLine(maxId, sinceId, getResponseHandler());
+	boolean isNetworkAvailable = getIntent().getBooleanExtra("isNetworkAvailable", false);
+	
+	if(isNetworkAvailable)
+	    restClient.getHomeTimeLine(maxId, sinceId, getResponseHandler());
+	else
+	    itemAdapter.addAll(TweetDAO.getRecentItems());
     }
 
     JsonHttpResponseHandler getResponseHandler()
@@ -69,13 +76,17 @@ public class TimelineActivity extends Activity
 		if (jsonArray.length() <= 0)
 		    return;
 
-		Log.d("DEBUG", jsonArray.toString());
+		//Log.d("DEBUG", jsonArray.toString());
 
-		itemAdapter.addAll(Tweet.fromJsonArray(jsonArray));
+		List<Tweet> tweetList = Tweet.fromJsonArray(jsonArray);
+		itemAdapter.addAll(tweetList);
 
 		Log.d("DEBUG", "adapter size = " + itemAdapter.getCount());
 
 		setCursors(jsonArray);
+		
+		//Persist all tweets in DB
+		TweetDAO.saveAllItems(tweetList);
 	    }
 
 	    @Override

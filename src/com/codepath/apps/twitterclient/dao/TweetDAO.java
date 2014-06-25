@@ -2,8 +2,7 @@ package com.codepath.apps.twitterclient.dao;
 
 import java.util.List;
 
-import android.content.ClipData.Item;
-
+import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 import com.codepath.apps.twitterclient.model.Tweet;
@@ -22,34 +21,49 @@ public class TweetDAO
     {
 	return new Select().from(Tweet.class).orderBy("id DESC").limit("300").execute();
     }
-    
-    public static List<Tweet> getAllItemsByUser(User user) {
-        // This is how you execute a query
-        return new Select()
-          .from(Tweet.class)
-          .where("User = ?", user.getId())
-          .orderBy("Name ASC")
-          .execute();
-    }
 
-    public static void createItem()
+    public static List<Tweet> getAllItemsByUser(User user)
     {
-	// Create a category
-	User user = new User();
-	//user.setUid(uid);
-	user.setName("Jim");
-	user.save();
+	// This is how you execute a query
+	return new Select()
+		.from(Tweet.class)
+		.where("User = ?", user.getId())
+		.orderBy("Name ASC")
+		.execute();
+    }
 
-	// Create an item 
-	Tweet item = new Tweet();
-	item.setTweetId(1);;
-	item.setBody(""); 
-	//item.setCreatedTime(createdTime); 
-	item.setUser(user);
-	item.save();
+    public static void saveAllItems(List<Tweet> tweetList)
+    {
+	ActiveAndroid.beginTransaction();
+	try
+	{
+	    for (Tweet tweet : tweetList)
+	    {
+		createItem(tweet);
+	    }
+	    ActiveAndroid.setTransactionSuccessful();
+	}
+	finally
+	{
+	    ActiveAndroid.endTransaction();
+	}
 
     }
-    
+
+    public static void createItem(Tweet tweet)
+    {
+	User user = tweet.getUser();
+	User newUser = new User();
+	newUser.setUid(user.getUid());
+	newUser.setName(user.getName());
+	newUser.setScreenName(user.getScreenName());
+	newUser.setProfileImageUrl(user.getProfileImageUrl());
+	newUser.save();
+	
+	tweet.setUser(user);
+	tweet.save();
+    }
+
     public static void deleteItemById(long tweetId)
     {
 	Tweet item = Tweet.load(Tweet.class, tweetId);
@@ -58,7 +72,7 @@ public class TweetDAO
 	new Delete().from(Tweet.class).where("remote_id = ?", tweetId).execute();
 
     }
-    
+
     public static void deleteAllItems()
     {
 	new Delete().from(Tweet.class).execute(); // all records

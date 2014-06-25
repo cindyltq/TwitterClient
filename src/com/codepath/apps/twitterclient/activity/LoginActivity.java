@@ -34,6 +34,11 @@ public class LoginActivity extends OAuthLoginActivity<TwitterRestClient>
     public void onLoginSuccess()
     {
 	Intent i = new Intent(this, TimelineActivity.class);
+	if (CommonUtil.isNetworkConnected(this))
+	    i.putExtra("isNetworkAvailable", false);
+	else	
+	  i.putExtra("isNetworkAvailable", false);
+	
 	startActivity(i);
     }
 
@@ -56,6 +61,10 @@ public class LoginActivity extends OAuthLoginActivity<TwitterRestClient>
 	if (!CommonUtil.isNetworkConnected(this))
 	{
 	    Toast.makeText(this, "Internet connection is unavailable.", Toast.LENGTH_SHORT).show();
+	    
+	    Intent i = new Intent(this, TimelineActivity.class);
+	    i.putExtra("isNetworkAvailable", false);
+	    startActivity(i);
 	}
 	else
 	{	
