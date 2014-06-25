@@ -22,6 +22,8 @@ Completed user stories (Required):
 
 Completed user stories (Optional):
 - Improve the user interface and theme the app to feel "twitter branded"
+- User can open the twitter app offline and see last loaded tweets 
+ - Tweets are persisted into sqlite and can be displayed from the local DB
 
  
 Walkthrough of all user stories:
