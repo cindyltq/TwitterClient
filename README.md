@@ -1,5 +1,5 @@
-Grid Image Search
-==================
+Simple Twitter Client
+=====================
 
 This is the third assignment of Android Boot Camp. This app is a simple Twitter client.
 
