@@ -40,9 +40,12 @@ public class TimelineActivity extends BaseFragmentActivity
 	super.onCreate(savedInstanceState);
 	requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS); 
 	setContentView(R.layout.activity_timeline);
-
-	showProgressBar();
-	setupTabs();
+	
+	showProgressBar();	
+	setupTabs();	
+	
+	getSupportFragmentManager().executePendingTransactions();
+	homeTimelineFragment = (HomeTimelineFragment) getSupportFragmentManager().findFragmentByTag(HOME_TAB_TAG);
     }
 
     private void setupTabs()
@@ -114,8 +117,8 @@ public class TimelineActivity extends BaseFragmentActivity
 	    @Override
 	    public void onFailure(java.lang.Throwable e, org.json.JSONObject errorResponse)
 	    {
+		TimelineActivity.this.hideProgressBar();
 		String msg = CommonUtil.getJsonErrorMsg(errorResponse);
-
 		Toast.makeText(TimelineActivity.this, "loadProfileInfo Remote server call failed. " + msg, Toast.LENGTH_SHORT).show();
 
 		Log.d("ERROR", "loadProfileInfo REST call failure : " + e.getMessage() + "JSON error message: " + msg);
@@ -133,6 +136,7 @@ public class TimelineActivity extends BaseFragmentActivity
     // Respond to Compose icon click on ActionBar
     private void composeTweet()
     {
+	showProgressBar();
 	Intent intent = new Intent(this, ComposeTweetActivity.class);
 	startActivityForResult(intent, REQUEST_CODE);
     }
@@ -140,6 +144,8 @@ public class TimelineActivity extends BaseFragmentActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+	hideProgressBar();
+	
 	if (resultCode == RESULT_OK && requestCode == REQUEST_CODE)
 	{
 	    Tweet newTweet = (Tweet) data.getExtras().getSerializable("tweet");
@@ -162,13 +168,14 @@ public class TimelineActivity extends BaseFragmentActivity
 	    @Override
 	    public void onSuccess(JSONObject jsonObject)
 	    {
+		TimelineActivity.this.hideProgressBar();
+		
 		Log.d("DEBUG", jsonObject.toString());
 
 		Tweet newTweet = Tweet.fromJson(jsonObject);
 
 		homeTimelineFragment.displayNewTweet(newTweet, true);
 		
-		TimelineActivity.this.hideProgressBar();
 	    }
 
 	    @Override
