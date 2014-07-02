@@ -43,8 +43,12 @@
 			android:label="@string/title_activity_timeline" >
 		</activity>
 		<activity
-			android:name="com.codepath.apps.twitterclient.ComposeTweetActivity"
+			android:name="com.codepath.apps.twitterclient.activity.ComposeTweetActivity"
 			android:label="@string/title_activity_compose_tweet" >
+		</activity>
+		<activity
+			android:name="com.codepath.apps.twitterclient.activity.ProfileActivity"
+			android:label="@string/title_activity_profile" >
 		</activity>
 	</application>
 </manifest>

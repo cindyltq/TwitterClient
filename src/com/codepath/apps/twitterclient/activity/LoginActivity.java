@@ -10,10 +10,11 @@ import android.widget.Toast;
 
 import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.helper.CommonUtil;
+import com.codepath.apps.twitterclient.helper.IConstants;
 import com.codepath.apps.twitterclient.helper.TwitterRestClient;
 import com.codepath.oauth.OAuthLoginActivity;
 
-public class LoginActivity extends OAuthLoginActivity<TwitterRestClient>
+public class LoginActivity extends OAuthLoginActivity<TwitterRestClient> implements IConstants
 {
     TextView tvAppDesc;
     
@@ -35,9 +36,9 @@ public class LoginActivity extends OAuthLoginActivity<TwitterRestClient>
     {
 	Intent i = new Intent(this, TimelineActivity.class);
 	if (CommonUtil.isNetworkConnected(this))
-	    i.putExtra("isNetworkAvailable", true);
+	    i.putExtra(NETWORK_ON_FLAG, true);
 	else	
-	  i.putExtra("isNetworkAvailable", false);
+	  i.putExtra(NETWORK_ON_FLAG, false);
 	
 	startActivity(i);
     }
@@ -63,7 +64,7 @@ public class LoginActivity extends OAuthLoginActivity<TwitterRestClient>
 	    Toast.makeText(this, "Internet connection is unavailable.", Toast.LENGTH_SHORT).show();
 	    
 	    Intent i = new Intent(this, TimelineActivity.class);
-	    i.putExtra("isNetworkAvailable", false);
+	    i.putExtra(NETWORK_ON_FLAG, false);
 	    startActivity(i);
 	}
 	else

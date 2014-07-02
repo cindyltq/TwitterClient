@@ -20,4 +20,7 @@
 	<string name="send">Tweet</string>
 	<string name="cancel">Cancel</string>
 	<string name="limit">140</string>
+	<string name="action_profile">Profile</string>
+	<string name="title_activity_profile">ProfileActivity</string>
+	<string name="hello_world">Hello world!</string>
 </resources>

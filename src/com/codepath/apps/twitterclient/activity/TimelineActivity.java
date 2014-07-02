@@ -1,140 +1,76 @@
 package com.codepath.apps.twitterclient.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.view.Window;
 import android.widget.Toast;
 
-import com.codepath.apps.twitterclient.ComposeTweetActivity;
 import com.codepath.apps.twitterclient.R;
-import com.codepath.apps.twitterclient.adapter.TweetArrayAdapter;
-import com.codepath.apps.twitterclient.dao.TweetDAO;
+import com.codepath.apps.twitterclient.fragment.HomeTimelineFragment;
+import com.codepath.apps.twitterclient.fragment.MentionsTimelineFragment;
+import com.codepath.apps.twitterclient.fragment.TweetDetailFragment;
 import com.codepath.apps.twitterclient.helper.CommonUtil;
-import com.codepath.apps.twitterclient.helper.EndlessScrollListener;
-import com.codepath.apps.twitterclient.helper.TwitterApplication;
-import com.codepath.apps.twitterclient.helper.TwitterRestClient;
+import com.codepath.apps.twitterclient.helper.FragmentTabListener;
 import com.codepath.apps.twitterclient.model.Tweet;
+import com.codepath.apps.twitterclient.model.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-public class TimelineActivity extends Activity
+public class TimelineActivity extends BaseFragmentActivity
 {
-    TwitterRestClient restClient = TwitterApplication.getRestClient();
-    private ListView lvTimeline;
-    private ArrayList<Tweet> tweetList = new ArrayList<Tweet>();
-    private ArrayAdapter<Tweet> itemAdapter;
-    public static int REQUEST_CODE = 40;
+    private final String HOME_TAB_TAG = "HOME";
+    private final String MENTIONS_TAB_TAG = "MENTIONS";
 
-    long maxId = 0;
-    long sinceId = 0;
-    public static int COUNT = 6;
+    HomeTimelineFragment homeTimelineFragment;
+    MentionsTimelineFragment mentionsFragment;
+    TweetDetailFragment tweetDetailFragment;
+
+    public static int REQUEST_CODE = 40;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
 	super.onCreate(savedInstanceState);
+	requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS); 
 	setContentView(R.layout.activity_timeline);
 
-	lvTimeline = (ListView) findViewById(R.id.lvTimeline);
-	itemAdapter = new TweetArrayAdapter(this, tweetList);
-	lvTimeline.setAdapter(itemAdapter);
-	
-	populateTimeline();
-	
-	lvTimeline.setOnScrollListener(getOnScrollListener());
+	showProgressBar();
+	setupTabs();
     }
 
-    private void populateTimeline()
+    private void setupTabs()
     {
-	boolean isNetworkAvailable = getIntent().getBooleanExtra("isNetworkAvailable", false);
-	
-	if(isNetworkAvailable)
-	    restClient.getHomeTimeLine(maxId, sinceId, getResponseHandler());
-	else
-	    itemAdapter.addAll(TweetDAO.getRecentItems());
-    }
+	ActionBar actionBar = getActionBar();
+	actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+	actionBar.setDisplayShowTitleEnabled(true);
 
-    JsonHttpResponseHandler getResponseHandler()
-    {
-	return new JsonHttpResponseHandler()
-	{
-	    @Override
-	    public void onSuccess(JSONArray jsonArray)
-	    {
-		if (jsonArray.length() <= 0)
-		    return;
+	Tab tab1 = actionBar
+		.newTab()
+		.setText("Home")
+		.setIcon(R.drawable.ic_home)
+		.setTag(HOME_TAB_TAG)
+		.setTabListener(new FragmentTabListener<HomeTimelineFragment>(R.id.flContainer, this, HOME_TAB_TAG,
+			HomeTimelineFragment.class));
 
-		//Log.d("DEBUG", jsonArray.toString());
+	actionBar.addTab(tab1);
+	actionBar.selectTab(tab1);
 
-		List<Tweet> tweetList = Tweet.fromJsonArray(jsonArray);
-		itemAdapter.addAll(tweetList);
+	Tab tab2 = actionBar
+		.newTab()
+		.setText("Mentions")
+		.setIcon(R.drawable.ic_mentions)
+		.setTag(MENTIONS_TAB_TAG)
+		.setTabListener(new FragmentTabListener<MentionsTimelineFragment>(R.id.flContainer, this, MENTIONS_TAB_TAG,
+			MentionsTimelineFragment.class));
 
-		Log.d("DEBUG", "adapter size = " + itemAdapter.getCount());
-
-		setCursors(jsonArray);
-		
-		//Persist all tweets in DB
-		TweetDAO.saveAllItems(tweetList);
-	    }
-
-	    @Override
-	    public void onFailure(java.lang.Throwable e, org.json.JSONObject errorResponse)
-	    {
-		String msg =  CommonUtil.getJsonErrorMsg(errorResponse);
-		
-		Toast.makeText(TimelineActivity.this, "Remote server call failed. " + msg, Toast.LENGTH_SHORT).show();
-
-		Log.d("ERROR", "REST call failure : " + e.getMessage() + "JSON error message: " + msg);
-	    }
-	};
-    }
-
-    private void setCursors(JSONArray jsonArray)
-    {
-	try
-	{
-	    JSONObject oldestObject = (JSONObject) jsonArray.get(jsonArray.length() - 1);
-	    JSONObject newestObject = (JSONObject) jsonArray.get(0);
-
-	    Tweet oldestTweet = Tweet.fromJson(oldestObject);
-	    Tweet newestTweet = Tweet.fromJson(newestObject);
-
-	    maxId = oldestTweet.getTweetId() - 1;
-	    // sinceId = newestTweet.getTweetId();
-
-	    Log.d("DEBUG", "maxId = " + maxId + ", sinceId = " + sinceId);
-	}
-	catch (JSONException e)
-	{
-	    Log.d("ERROR", "Error in JsonHttpResponseHandler : " + e.getMessage());
-	    e.printStackTrace();
-	}
-    }
-
-    // Respond to image grid scrolling
-    private EndlessScrollListener getOnScrollListener()
-    {
-	return new EndlessScrollListener()
-	{
-	    @Override
-	    public void onLoadMore(int page, int totalItemsCount)
-	    {
-		// Triggered only when new data needs to be appended to the list
-		restClient.getHomeTimeLine(maxId, sinceId, getResponseHandler());
-	    }
-	};
+	actionBar.addTab(tab2);
     }
 
     // Inflate ActionBar
@@ -142,6 +78,7 @@ public class TimelineActivity extends Activity
     public boolean onCreateOptionsMenu(Menu menu)
     {
 	getMenuInflater().inflate(R.menu.menu_compose, menu);
+	getMenuInflater().inflate(R.menu.menu_profile, menu);
 	return true;
     }
 
@@ -153,10 +90,44 @@ public class TimelineActivity extends Activity
 	case R.id.miCompose:
 	    composeTweet();
 	    return true;
+	case R.id.miProfile:
+	    loadProfileInfo();
+	    return true;
 	default:
 	    return super.onOptionsItemSelected(item);
 	}
+    }
 
+    private void loadProfileInfo()
+    {
+	showProgressBar();
+	
+	REST_CLIENT.getMyInfo(new JsonHttpResponseHandler()
+	{
+	    @Override
+	    public void onSuccess(JSONObject json)
+	    {
+		User user = User.fromJson(json);
+		displayProfile(user);
+	    }
+
+	    @Override
+	    public void onFailure(java.lang.Throwable e, org.json.JSONObject errorResponse)
+	    {
+		String msg = CommonUtil.getJsonErrorMsg(errorResponse);
+
+		Toast.makeText(TimelineActivity.this, "loadProfileInfo Remote server call failed. " + msg, Toast.LENGTH_SHORT).show();
+
+		Log.d("ERROR", "loadProfileInfo REST call failure : " + e.getMessage() + "JSON error message: " + msg);
+	    }
+	});
+    }
+
+    public void displayProfile(User user)
+    {
+	Intent intent = new Intent(this, ProfileActivity.class);
+	intent.putExtra(USER_OBJ_KEY, user);
+	startActivity(intent);
     }
 
     // Respond to Compose icon click on ActionBar
@@ -164,7 +135,6 @@ public class TimelineActivity extends Activity
     {
 	Intent intent = new Intent(this, ComposeTweetActivity.class);
 	startActivityForResult(intent, REQUEST_CODE);
-
     }
 
     @Override
@@ -175,13 +145,13 @@ public class TimelineActivity extends Activity
 	    Tweet newTweet = (Tweet) data.getExtras().getSerializable("tweet");
 	    if (!StringUtils.isEmpty(newTweet.getBody()))
 	    {
+		showProgressBar();
 		// Post Tweet to server
-		restClient.postStatusUpdate(newTweet.getBody(), getResponseHandlerForPost());
+		REST_CLIENT.postStatusUpdate(newTweet.getBody(), getResponseHandlerForPost());
 
 		// Insert the new tweet into current item list for display
-		displayNewTweet(newTweet, false);
+		homeTimelineFragment.displayNewTweet(newTweet, false);
 	    }
-
 	}
     }
 
@@ -192,35 +162,112 @@ public class TimelineActivity extends Activity
 	    @Override
 	    public void onSuccess(JSONObject jsonObject)
 	    {
-
 		Log.d("DEBUG", jsonObject.toString());
 
 		Tweet newTweet = Tweet.fromJson(jsonObject);
 
-		displayNewTweet(newTweet, true);
+		homeTimelineFragment.displayNewTweet(newTweet, true);
+		
+		TimelineActivity.this.hideProgressBar();
 	    }
 
 	    @Override
 	    public void onFailure(java.lang.Throwable e, org.json.JSONObject errorResponse)
 	    {
-		String msg =  CommonUtil.getJsonErrorMsg(errorResponse);		
+		TimelineActivity.this.hideProgressBar();
+		String msg = CommonUtil.getJsonErrorMsg(errorResponse);
 		Toast.makeText(TimelineActivity.this, "Remote server call failed. " + msg, Toast.LENGTH_SHORT).show();
 
-		Log.d("ERROR", "REST call failure : " + e.getMessage() + "JSON error message: " + msg);
+		Log.d("ERROR", "UpdateStatus REST call failure : " + e.getMessage() + "JSON error message: " + msg);
 		e.printStackTrace();
 	    }
 	};
     }
+    
+    // // TODO
+    // private void displayHomeTimelineFragment()
+    // {
+    // FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    //
+    // // if the fragment is already in container
+    // if (getHomeTimelineFragment().isAdded())
+    // transaction.show(getHomeTimelineFragment());
+    // else
+    // transaction.add(R.id.flContainer, getHomeTimelineFragment(), "Home Timeline");
+    //
+    // if (mentionsFragment.isAdded())
+    // transaction.hide(mentionsFragment);
+    //
+    // transaction.commit();
+    // }
+    //
+    // // Respond to Compose icon click on ActionBar
+    // private void displayMentionsFragment()
+    // {
+    // FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    //
+    // // if the fragment is already in container
+    // if (getMentionsTimelineFragment().isAdded())
+    // transaction.show(getMentionsTimelineFragment());
+    // else
+    // transaction.add(R.id.flContainer, getMentionsTimelineFragment(), "Mentions");
+    //
+    // if (homeTimelineFragment.isAdded())
+    // transaction.hide(homeTimelineFragment);
+    //
+    // transaction.commit();
+    //
+    // }
+    // private HomeTimelineFragment getHomeTimelineFragment()
+    // {
+    // if (homeTimelineFragment == null)
+    // {
+    // FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    //
+    // boolean networkFlag = getIntent().getBooleanExtra(NETWORK_ON_FLAG, false);
+    // homeTimelineFragment = HomeTimelineFragment.newInstance(networkFlag);
+    // transaction.replace(R.id.flContainer, homeTimelineFragment);
+    //
+    // transaction.commit();
+    // }
+    //
+    // return homeTimelineFragment;
+    // }
+    //
+    // private MentionsTimelineFragment getMentionsTimelineFragment()
+    // {
+    // if (mentionsFragment == null)
+    // {
+    // FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+    //
+    // boolean networkFlag = getIntent().getBooleanExtra(NETWORK_ON_FLAG, false);
+    // mentionsFragment = MentionsTimelineFragment.newInstance(networkFlag);
+    // transaction.replace(R.id.flContainer, homeTimelineFragment);
+    //
+    // transaction.commit();
+    // }
+    //
+    // return mentionsFragment;
+    // }
 
-    private void displayNewTweet(Tweet newTweet, boolean isFromServer)
-    {	
-	if (isFromServer)
-	    tweetList.set(0,newTweet);
-	else
-	    tweetList.add(0,newTweet);
-	
-	lvTimeline.setSelection(0);
-	itemAdapter.notifyDataSetChanged();
+    private TweetDetailFragment getTweetDetailFragment()
+    {
+	if (tweetDetailFragment == null)
+	    tweetDetailFragment = new TweetDetailFragment();
+
+	return tweetDetailFragment;
     }
 
+    @Override
+    public void onItemSelected(String link)
+    {
+	// TODO
+	// getTweetDetailFragment() = getSupportFragmentManager().findFragmentById(R.id.);
+	// transaction.replace(R.id.flHolder, getTweetDetailFragment());
+
+	if (getTweetDetailFragment() != null && getTweetDetailFragment().isInLayout())
+	{
+	    // getTweetDetailFragment().setText(link);
+	}
+    }
 }

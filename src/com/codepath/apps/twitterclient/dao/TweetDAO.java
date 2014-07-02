@@ -1,5 +1,6 @@
 package com.codepath.apps.twitterclient.dao;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.activeandroid.ActiveAndroid;
@@ -17,13 +18,7 @@ public class TweetDAO
 	return new Select().from(Tweet.class).where("id = ?", id).executeSingle();
     }
 
-    public static List<Tweet> getRecentItems()
-    {
-	List<Tweet> tweetList = new Select().from(Tweet.class).orderBy("id DESC").limit("300").execute();
-	
-	return tweetList;
-    }
-
+  
     public static List<Tweet> getAllItemsByUser(User user)
     {
 	// This is how you execute a query
@@ -78,5 +73,24 @@ public class TweetDAO
     public static void deleteAllItems()
     {
 	new Delete().from(Tweet.class).execute(); // all records
+    }
+
+    public static List<Tweet> getRecentHomeItems()
+    {
+	List<Tweet> tweetList = new Select().from(Tweet.class).orderBy("id DESC").limit("300").execute();
+	
+	return tweetList;
+    }
+
+    public static List<Tweet> getRecentMentionsItems()
+    {
+	// TODO Auto-generated method stub
+	return null;
+    }
+    
+    public static List<Tweet> getRecentUserItems()
+    {
+	// TODO Auto-generated method stub
+	return null;
     }
 }

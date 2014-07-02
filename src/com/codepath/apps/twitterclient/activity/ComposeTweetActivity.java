@@ -1,4 +1,4 @@
-package com.codepath.apps.twitterclient;
+package com.codepath.apps.twitterclient.activity;
 
 import java.util.Date;
 
@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.helper.CommonUtil;
 import com.codepath.apps.twitterclient.model.Tweet;
 import com.codepath.apps.twitterclient.model.User;

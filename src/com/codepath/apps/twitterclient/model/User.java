@@ -34,7 +34,19 @@ public class User extends Model implements Serializable
 
     @Column(name = "profileImageUrl")
     private String profileImageUrl;
+    
+    @Column(name = "tagLine")
+    private String tagLine;
 
+    @Column(name = "followersCount")
+    private String followersCount;
+    
+    @Column(name = "followingCount")
+    private String followingCount;
+    
+    @Column(name = "tweetsCount")
+    private String tweetsCount;
+    
     public User()
     {
 	super();
@@ -99,16 +111,63 @@ public class User extends Model implements Serializable
 	this.name = name;
     }
 
+    
+    public String getTagLine()
+    {
+        return tagLine;
+    }
+
+    public void setTagLine(String tagLine)
+    {
+        this.tagLine = tagLine;
+    }
+    
+    
+
+    public String getFollowersCount()
+    {
+        return followersCount;
+    }
+
+    public void setFollowersCount(String followersCount)
+    {
+        this.followersCount = followersCount;
+    }
+
+    public String getFollowingCount()
+    {
+        return followingCount;
+    }
+
+    
+    public String getTweetsCount()
+    {
+        return tweetsCount;
+    }
+
+    public void setTweetsCount(String tweetsCount)
+    {
+        this.tweetsCount = tweetsCount;
+    }
+
+    public void setFollowingCount(String followingCount)
+    {
+        this.followingCount = followingCount;
+    }
+
     public static User fromJson(JSONObject jsonObject)
     {
 	User user = new User();
-	// Deserialize json into object fields
 	try
 	{
 	    user.uid = jsonObject.getLong("id");
 	    user.name = jsonObject.getString("name");
 	    user.screenName = jsonObject.getString("screen_name");
 	    user.profileImageUrl = jsonObject.getString("profile_image_url");
+	    user.tagLine = jsonObject.getString("description");
+	    user.followersCount = jsonObject.getString("followers_count");
+	    user.followingCount = jsonObject.getString("friends_count");
+	    user.tweetsCount = jsonObject.getString("statuses_count");
 	}
 	catch (JSONException e)
 	{
@@ -155,5 +214,6 @@ public class User extends Model implements Serializable
     {
 	return new Select().from(User.class).where("id = ?", id).executeSingle();
     }
+
 
 }
