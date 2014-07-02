@@ -1,9 +1,9 @@
-Simple Twitter Client
-=====================
+Twitter Client
+==================
 
-This is the third assignment of Android Boot Camp. This app is a simple Twitter client.
+This app is a simple Twitter client.
 
-Time spent: 30 hours spent in total
+Time spent: 55 hours spent in total
 
 Completed user stories (Required):
 
@@ -19,13 +19,21 @@ Completed user stories (Required):
  - User is taken back to home timeline with new tweet visible in timeline
  - **Optional**: User can see a counter with total number of characters left for tweet
 
+- User can switch between Timeline and Mention views using tabs.  - User can view their home timeline tweets.
+ - User can view the recent mentions of their username.
+ - User can scroll to bottom of either of these lists and new tweets will load ("infinite scroll")
+- User can navigate to view their own profile  - User can see picture, tagline, # of followers, # of following, and tweets on their profile.
+
+- User can click on the profile image in any tweet to see another user's profile.  - User can see picture, tagline, # of followers, # of following, and tweets of clicked user.
+ - Profile view should include that user's timeline
+
 
 Completed user stories (Optional):
-- Improve the user interface and theme the app to feel "twitter branded"
-- User can open the twitter app offline and see last loaded tweets 
- - Tweets are persisted into sqlite and can be displayed from the local DB
+- **Advanced**: Robust error handling, check if internet is available, handle error cases, network failures
+- **Advanced**: When a network request is sent, user sees an indeterminate progress indicator
+- **Advanced**: Improve the user interface and theme the app to feel "twitter branded"
 
  
 Walkthrough of all user stories:
 
-![Twitter Demo](./Twitter.gif)
+![Twitter Demo](./Twitter2.gif)
